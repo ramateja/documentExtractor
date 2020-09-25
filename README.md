@@ -1,4 +1,4 @@
-# documentExtractor
+# Document Extractor
 Extract text from pdf or word documents
 
 ## Usage
