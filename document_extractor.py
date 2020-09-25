@@ -18,12 +18,16 @@ class DocumentExtractor():
         self.cleaning_regex = r"[-()\"#/;:<>{}=~|?,\n]"
         return
     
-    def extract_document(self,file_path, raw=False):
+    def extract_document(self,file_path, raw=False, save=False):
         filename, file_extension = os.path.splitext(file_path)
         if file_extension not in valid_file_extensions:
             return 0
         extractor = self.fetch_extractor(file_extension)
         raw_text = extractor(file_path)
+        if save:
+            fileObject = open(filename+".txt","w+")
+            fileObject.write(raw_text)
+            fileObject.close()
         if raw:
             return raw_text
         raw_text = self.regex_clean(raw_text)
@@ -78,11 +82,11 @@ class DocumentExtractor():
 
     def extract_doc(self,file_path):
         return 0
-        # import textract
+        import textract
 
-        # text = textract.process(file_path)
-        # text = text.decode("utf-8") 
-        # return tmpText
+        text = textract.process(file_path)
+        text = text.decode("utf-8") 
+        return text
 
         
 if __name__ == "__main__":
@@ -90,10 +94,12 @@ if __name__ == "__main__":
     parser.add_argument("-p", "--Path", help = "File Path")
     parser.add_argument("-r", "--Raw", type=int, choices=[0, 1], default=0, 
                         help = "Return Clean Text")
+    parser.add_argument("-s", "--Save", type=int, choices=[0, 1], default=1, 
+                        help = "Save Raw Text file")
     args = parser.parse_args()
     file_path = args.Path
     DE = DocumentExtractor()
     # print(args.Clean)
-    print(DE.extract_document(file_path,args.Raw))
+    print(DE.extract_document(file_path, args.Raw, args.Save))
     # print(time.time()-st_time)
     
