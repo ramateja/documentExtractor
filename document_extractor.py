@@ -7,7 +7,7 @@ import os
 # import docx
 import docx2txt
 import argparse 
-
+import textract
 
 
 valid_file_extensions = [".pdf",".doc",".docx"]
@@ -54,7 +54,7 @@ class DocumentExtractor():
         return text
 
     def regex_clean(self,text):
-        return re.sub(self.cleaning_regex, "", text).strip()
+        return re.sub(self.cleaning_regex, " ", text).strip()
 
     def extract_pdf(self,file_path):
 
@@ -81,8 +81,8 @@ class DocumentExtractor():
         return text
 
     def extract_doc(self,file_path):
-        return 0
-        import textract
+        # return 0
+        
 
         text = textract.process(file_path)
         text = text.decode("utf-8") 
